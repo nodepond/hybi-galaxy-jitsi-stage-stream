@@ -1,4 +1,5 @@
 {
+  "homepage": "https://nervous-kilby-638a81.netlify.app/",
   "name": "hybi-galaxy-jitsi-stage-stream",
   "version": "0.1.0",
   "private": true,
@@ -8,6 +9,7 @@
     "@testing-library/user-event": "^12.1.10",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
+    "react-jutsu": "^3.0.3",
     "react-scripts": "4.0.3",
     "web-vitals": "^1.0.1"
   },
