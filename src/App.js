@@ -1,6 +1,8 @@
 import './App.css'
 import React, { useEffect } from 'react'
 // import { useJitsi } from 'react-jutsu'
+import screenfull from 'screenfull'
+import { findByLabelText } from '@testing-library/react'
 
 function App () {
   useEffect(() => {
@@ -9,6 +11,27 @@ function App () {
       // cleanup
     }
   })
+
+  const fullscreenStyle = {
+    display: 'flex',
+    top: '0',
+    left: '0',
+    width: '100%',
+    height: '100%'
+  }
+
+  const buttonContainerStyle = {
+    display: 'flex',
+    position: 'absolute',
+    right: '0',
+    bottom: '0',
+    background: 'red'
+  }
+
+  const buttonStyle = {
+    width: '120px',
+    height: '80px'
+  }
 
   const jitsiConfig = {
     domain: 'the-prdct.com',
@@ -77,6 +100,7 @@ function App () {
 
   let streamVideoId = 'idle'
   let streamAudioId = 'idle'
+  let streamAudioMuted = false
 
   function onRemoteTrack (track) {
     const participants = room.getParticipants()
@@ -105,7 +129,6 @@ function App () {
         audioContainer.play()
       }
     }
-    document.body.style.backgroundColor = 'green'
   }
 
   function onRemoteTrackRemoved (track) {
@@ -170,17 +193,35 @@ function App () {
     connection.connect()
   }
 
+  function onToggleMute () {
+    console.log('onToggleMute')
+    document.body.style.backgroundColor = 'purple'
+    streamAudioMuted = !streamAudioMuted
+    document.getElementById('audioContainer').muted = streamAudioMuted
+  }
+  function onToggleFullscreen () {
+    console.log('onToggleFullscreen')
+    document.body.style.backgroundColor = 'black'
+    if (screenfull.isEnabled) {
+      screenfull.request(document.getElementById('videoContainer'))
+    }
+  }
+
   return (
     <div className="App App-header" onClick={() => {
       document.getElementById('videoContainer').play()
       document.getElementById('audioContainer').play()
     }}>
-      <div style={{ width: '100%' }}>
-        <video autoplay='true' id='videoContainer' style={{ height: '100px', width: '100px', background: 'red' }} />
-        <audio autoplay='true' id='audioContainer' style={{ height: '100px', width: '100px', background: 'blue' }} />
+      <div style={fullscreenStyle}>
+        <video autoplay='true' id='videoContainer' style={{ display: 'flex', 'min-height': '100vh', 'min-width': '100vw', background: 'none' }} />
+        <audio autoplay='true' id='audioContainer' />
         {/* {error && <p>{error}</p>} */}
         {/* {jitsi && registerEvents(jitsi)} */}
         {/* <div id={jitsiConfig.parentNode} style={{ height: '100vh' }} /> */}
+      </div>
+      <div style={buttonContainerStyle}>
+        <button style={buttonStyle} onClick={() => { onToggleMute() }}>Mute</button>
+        <button style={buttonStyle} onClick={() => { onToggleFullscreen() }}>Fullscreen</button>
       </div>
     </div>
   )
