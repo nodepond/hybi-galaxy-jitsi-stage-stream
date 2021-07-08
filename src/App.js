@@ -100,7 +100,7 @@ function App () {
 
   let streamVideoId = 'idle'
   let streamAudioId = 'idle'
-  let streamAudioMuted = false
+  let streamAudioMuted = true
 
   function onRemoteTrack (track) {
     const participants = room.getParticipants()
